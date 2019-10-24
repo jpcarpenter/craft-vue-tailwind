@@ -1,0 +1,66 @@
+{%- import "_includes/layout/grid" as m_grid -%}
+
+{%- set block = block ?? {} -%}
+{%- set image = image ?? block["image"] ?? [] -%}
+{%- set format = format ?? block["format"] ?? [] -%}
+{%- set position = position ?? format.position ?? [] -%}
+{%- set width = width ?? format.columnSize ?? [] -%}
+{%- set class = class ?? "" -%}
+{%- set styles = styles ?? format.styles ?? [] -%}
+{%- set optimizedImages = optimizedImages ?? image.optimizedGlobals ?? null -%}
+{%- set figureClass = figureClass ?? "" -%}
+
+{%- set class =  [
+    position|length ? "float-#{position}" : "float-left",
+    width|length ? width : "w-full",
+    class ?? "",
+]|filter|join(" ") -%}
+
+{%- set content -%}
+
+    {%- for image in image -%}
+
+        <figure class="{{ figureClass }}">
+
+            <div class="relative">
+
+                {% set caption = image.caption is defined and image.caption|length ? image.caption : "" %}
+
+                {% if optimizedImages and optimizedImages.srcset() %}
+                    <picture>
+                        <source
+                            data-srcset="{{ optimizedImages.srcsetWebP() }}"
+                            data-lowsrc="{{ optimizedImages.placeholderImage() }}"
+                            data-sizes="auto"
+                            type="image/webp"
+                        />
+                        <img class="lazyload w-full"
+                            src="{{ optimizedImages.placeholderImage() }}"
+                            data-lowsrc="{{ optimizedImages.placeholderImage() }}"
+                            data-srcset="{{ optimizedImages.srcset() }}"
+                            data-sizes="auto"
+                            alt="{{ image.altDescription ?? image.title }}" />
+                    </picture>
+                {% else %}
+                    <img src="{{ image.url }}" title="{{ image.title }}" alt="{{ image.altDescription|length ? image.altDescription|striptags : image.title }}" class="w-full lazyload">
+                {% endif %}
+
+                {% if caption|length %}
+                    <figcaption class="text-sm text-gray-muted mt-2 pb-2 leading-none border-b-2 border-gray-quote">
+                        {{ caption }}
+                    </figcaption>
+                {% endif %}
+
+            </div>
+
+        </figure>
+
+    {%- endfor -%}
+{%- endset -%}
+
+{{ m_grid.column({
+    block: block,
+    content: content,
+    class: class,
+    styles: styles
+}) }}

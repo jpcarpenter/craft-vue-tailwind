@@ -1,0 +1,75 @@
+{# Allow `contentBlocks` variable to be overwritten if set with the include #}
+{%- set contentBlocks = contentBlocks ?? [] -%}
+{%- set sectionContent = sectionContent ?? "" -%}
+{%- set previousSection = previousSection ?? entry ?? {} -%}
+{%- set excludeFirstSection = excludeFirstSection ?? false -%}
+
+{# Utility variables #}
+{%- set containSection = true -%}
+{%- set isNewSection = true -%}
+{%- set addGrid = true -%}
+{%- set previousBlockTypeHandle = null -%}
+{%- set previousContain = false -%}
+{%- set previousGrid = false -%}
+{%- set addSpace = false -%}
+
+{# Setting global variables #}
+{%- set flowType = flowType ?? "text, image, snippet, video" -%}
+
+{# Check if a block should not be contained #}
+{%- set doNotContain = doNotContain ?? null -%}
+
+{# Loop through the blocks #}
+{% for block in contentBlocks %}
+
+    {# Check whether to wrap block in section, contain or grid #}
+    {%- set containSection = block.type.handle in doNotContain ? false :
+        block.type.handle == "background" ? false :
+        (previousBlockTypeHandle in flowType) and (block.type.handle in flowType) ? false : true -%}
+
+    {%- set containerClass = 'container' -%}
+
+    {%- set sectionClass = excludeFirstSection == true ? '' : 'section' -%}
+
+    {%- set isNewSection = (previousBlockTypeHandle in flowType) and (block.type.handle in flowType) ? false :
+        previousBlockTypeHandle == "background" ? false : true -%}
+
+    {%- set addGrid = (previousBlockTypeHandle in flowType) and (block.type.handle in flowType) ? false : true -%}
+
+    {# Loop through contentblocks and set sectionContent for use in newsection #}
+    {%- set sectionContent -%}
+        {{- sectionContent -}}
+        {%- include '_includes/contentblocks/types/' ~ block.type ignore missing with {
+            block: block,
+            entry: entry ?? null,
+            section: previousSection ?? null,
+        } only -%}
+    {%- endset -%}
+
+    {# Pass sectioncontent to newsection template for settting up #}
+    {%- include '_includes/layout/newsection' ignore missing with {
+        block: block,
+        sectionContent: sectionContent,
+        isNewSection: isNewSection,
+        firstLoop: loop.first ? true : false,
+        lastLoop: loop.last ? true : false,
+        previousBlockType: previousBlockTypeHandle,
+        containSection: containSection,
+        containerClass: containerClass,
+        addGrid: addGrid,
+        sectionFormat: "flex flex-wrap md:-mx-6",
+        previousContain: previousContain,
+        previousGrid: previousGrid,
+        sectionClass: sectionClass ~ " contentBlocks",
+        addSpace: addSpace
+    } only -%}
+
+    {# reset variables for next loop #}
+    {%- set sectionContent = "" -%}
+    {%- set previousSection = block -%}
+    {%- set previousContain = containSection -%}
+    {%- set previousGrid = addGrid -%}
+    {%- set previousBlockTypeHandle = block.type.handle -%}
+    {%- set excludeFirstSection = false -%}
+
+{% endfor %}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{{ siteName }}</title>
+
+  <script>
+    // Picture element HTML5 shiv
+    document.createElement( "picture" );
+
+    // Disable lazySizes from automatically initializing on page load since
+    // it was proving to be inconsistant because of how Vue renders JS.
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.init = false;
+  </script>
+
+  {% if getenv('ENVIRONMENT') != 'dev' and getenv('ENVIRONMENT') != 'local' %}
+    {{ craft.twigpack.includeCssModule("app.css") }}
+  {% endif %}
+
+  {% if getenv('ENVIRONMENT') == 'dev' %}
+    <script src="http://localhost:8080/app.js" async="true"></script>
+  {% else %}
+    {{ craft.twigpack.includeSafariNomoduleFix() }}
+    {{ craft.twigpack.includeJsModule("chunk-vendors.js", true) }}
+    {{ craft.twigpack.includeJsModule("app.js", true) }}
+  {% endif %}
+
+</head>
+
+<body>
+  <noscript>
+      <strong>We're sorry but {{ siteUrl }} doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+  </noscript>
+
+  <div id="app" v-cloak>
+
+    {# Where craft will inject data #}
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+  </div>
+
+</body>
+</html>

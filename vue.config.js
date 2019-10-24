@@ -60,9 +60,11 @@ module.exports = {
       }),
       new PurgecssPlugin({
         paths: glob.sync([
-          path.join(__dirname, "./templates/**/*.html"),
-          path.join(__dirname, "./templates/**/*.twig"),
-          path.join(__dirname, "./src/**/*.vue"),
+          path.join(__dirname, './templates/_layout.html'),
+          path.join(__dirname, './templates/**/*.html'),
+          path.join(__dirname, './templates/_includes/**/*.html'),
+          path.join(__dirname, './templates/_includes/contentblocks/types/*.html'),
+          path.join(__dirname, './src/**/*.vue'),
           path.join(__dirname, "./src/**/*.js"),
         ]),
         whitelist: whitelister(config.purgecssWhitelist),

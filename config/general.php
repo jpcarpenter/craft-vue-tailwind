@@ -26,6 +26,8 @@ return [
         // Whether to save the project config out to config/project.yaml
         // (see https://docs.craftcms.com/v3/project-config.html)
         'useProjectConfigFile' => false,
+        'devMode' => false,
+        'siteUrl' => 'http://' . $_SERVER['SERVER_NAME'] . '/',
     ],
 
     // Dev environment settings

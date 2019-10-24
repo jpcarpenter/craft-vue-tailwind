@@ -1,0 +1,68 @@
+{# {%- import "_includes/contentkit/macros/images" as m_image -%} #}
+
+{%- set block = block ?? {} -%}
+{%- set backgroundColor = backgroundColor ?? block["backgroundColor"] ?? "" -%}
+{%- set background = background ?? block["background"] ?? "" -%}
+{%- set textColor = textColor ?? block["textColor"] ?? "" -%}
+{%- set sectionContent = sectionContent ?? "" -%}
+{%- set sectionFormat = sectionFormat ?? block["sectionFormat"] ?? "flex flex-wrap" -%}
+{%- set sectionSpacing = sectionSpacing ?? block["sectionSpacing"] ?? "" -%}
+{%- set sectionStyles = sectionStyles ?? block["sectionStyles"] ?? [] -%}
+{%- set gridStyles = gridStyles ?? block["gridStyles"] ?? [] -%}
+{%- set isNewSection = isNewSection ?? false -%}
+{%- set containSection = containSection -%}
+{%- set containerClass = containerClass -%}
+{%- set addGrid = addGrid ?? false -%}
+{%- set firstLoop = firstLoop ?? false -%}
+{%- set lastLoop = lastLoop ?? false -%}
+{%- set previousBlockType = previousBlockType ?? "" -%}
+{%- set previousContain = previousContain -%}
+{%- set previousGrid = previousGrid -%}
+{%- set sectionClass = sectionClass ?? "section" -%}
+{%- set addSpace = addSpace ?? false -%}
+{%- set spaceClass = "" -%}
+
+{% if addSpace and (block.type == "image" or block.type == "text") %}
+    {%- set spaceClass = "space" -%}
+{% endif %}
+
+{%- set gridClass =  [
+    (sectionFormat),
+    gridStyles is iterable ? gridStyles|join(" ") : gridStyles,
+    gridClass ?? "",
+]|filter|join(" ") -%}
+
+{% if isNewSection %}
+    {% if not firstLoop %}
+        {% if addGrid and previousGrid %}
+            </div> <!-- close grid  -->
+        {% endif %}
+        {% if containSection and previousContain %}
+            </div> <!-- close container  -->
+        {% endif %}
+        </section>
+    {% endif %}
+
+    <section class="{{ sectionClass }}" data-aos="fade-up">
+
+{% endif %}
+
+{% if containSection %}
+    <div class="{{ containerClass }}">
+{% endif %}
+
+{% if addGrid %}
+    <div class="{{ gridClass }} {{ spaceClass }}">
+{% endif %}
+
+{{ sectionContent }}
+
+{% if lastLoop %}
+    {% if addGrid %}
+        </div>
+    {% endif %}
+    {% if containSection %}
+        </div>
+    {% endif %}
+    </section>
+{% endif %}

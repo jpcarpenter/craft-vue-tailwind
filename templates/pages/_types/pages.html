@@ -1,0 +1,12 @@
+{% do craft.app.elements.eagerLoadElements(
+    className(entry),
+    [entry],
+    ['contentBlocks', 'contentBlocks.image:image']
+) %}
+
+{%- include [
+    '_includes/contentblocks',
+] with {
+    entry: entry,
+    contentBlocks: entry.contentBlocks ?? []
+} only -%}

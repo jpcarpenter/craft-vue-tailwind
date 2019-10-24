@@ -20,9 +20,19 @@
     "issues": "https://github.com/chasegiunta/craft-vue-tailwind/issues"
   },
   "require": {
-    "craftcms/cms": "^3.0.0",
+    "craftcms/cms": "^3.3.7",
+    "clubstudioltd/craft-inline-svg": "0.1.2",
+    "craftcms/feed-me": "4.1.2",
+    "craftcms/redactor": "2.3.3.2",
+    "fruitstudios/linkit": "1.1.11",
     "vlucas/phpdotenv": "^2.4.0",
-    "nystudio107/craft-twigpack": "^1.1"
+    "nystudio107/craft-twigpack": "^1.1",
+    "rias/craft-position-fieldtype": "1.0.14",
+    "nystudio107/craft-imageoptimize": "^1.6",
+    "vaersaagod/matrixmate": "1.2.1",
+    "verbb/field-manager": "2.1.0",
+    "verbb/navigation": "1.1.13",
+    "verbb/super-table": "2.2.1"
   },
   "autoload": {
     "psr-4": {

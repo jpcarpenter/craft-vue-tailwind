@@ -1,0 +1,53 @@
+{# Add your custom template here, or use what is here as a starting point. #}
+
+{%- extends "_layout" -%}
+
+{# Get the user's search query from the 'q' query-string param #}
+{% set searchQuery = craft.app.request.getParam('q') %}
+
+{# Fetch entries that match the search query #}
+{% set entries = craft.entries()
+    .search(searchQuery)
+    .section('pages, singles')
+    .orderBy('score')
+    .all() %}
+
+{% block content %}
+    <section class="section pt-16 bg-gray-lightest">
+        <h1 class="text-center font-serifBold">Search</h1>
+        <div class="flex flex-row flex-wrap justify-center">
+            <div class="w-full md:w-5/12">
+                <form action="{{ url('/search') }}" class="w-full h-full flex items-center px-8 md:px-0 mx-auto">
+                    <div class="flex items-center w-full">
+                        <input class="bg-transparent border-b border-b-2 border-teal-200 appearance-none w-full text-blue-800 mr-3 py-1 px-2 leading-tight focus:outline-none rounded-none" type="text" placeholder="Search" name="q" aria-label="Search">
+                        <button class="flex-shrink-0 text-xl focus:outline-none" type="button">
+                            {{ inlineSvg('search') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section pt-16">
+        <div class="container">
+            {% if searchQuery|length and entries|length %}
+                <p class="uppercase mb-5 text-sm font-bold"><span>{{ entries|length }} results for "{{ searchQuery }}":</span></p>
+                <ul class="m-0">
+                    {% for entry in entries %}
+                        <li class="py-3 text-2xl font-bold border-solid border-gray-200 border-b">
+                            <a class="trans text-header hover:text-copper-300" href="{{ entry.url }}">{{ entry.title }}</a>
+                            <p class="font-normal text-base mt-0">Type: <span class="text-red-primary">{{ entry.section }}</span></p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                {% if searchQuery|length %}
+                    <p class="text-center text-2xl font-bold">Your search for “{{ searchQuery }}” didn’t return any results.</p>
+                {% else %}
+                    <p class="text-center text-2xl font-bold">Use the search bar above to search the site.</p>
+                {% endif %}
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

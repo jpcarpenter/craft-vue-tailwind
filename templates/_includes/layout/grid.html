@@ -1,0 +1,67 @@
+{%- macro column(options = {}) -%}
+    {%- set class = [
+        options["class"] is defined ? (options.class is iterable ? options.class|join(" ") : "") : "",
+    ] -%}
+    {%- set element = options.element ?? "div" -%}
+    {%- set section = options.section ?? {} -%}
+    {%- set block = options.block ?? {} -%}
+    {%- set format = options.format ?? block["format"] ?? {} -%}
+    {%- set columnSize = options.columnSize ?? block["columnSize"] ?? "1" -%}
+    {%- set position = options.position ?? block["position"] ?? "" -%}
+    {%- set styles = options.styles ?? block["styles"] ?? [] -%}
+    {%- set content = options.content ?? "" -%}
+
+    {%- if format|length -%}
+        {%- for breakpoint in format.all() -%}
+            
+            {%- set columnSize = breakpoint.columnSize ?? "full" -%}
+            {%- set class = class|merge(["#{columnSize == 'full' ? 'w-full md:px-6' : 'md:' ~ columnSize ~ ' md:px-6'}"]) -%}
+
+            {%- if section["sectionFormat"] ?? "flex" == "flow" %}
+                {%- if breakpoint["position"] ?? "" and breakpoint.position != "auto" -%}
+                    {%- set class = class|merge(["float-#{breakpoint.position}"]) -%}
+                {%- endif -%}
+            {%- else -%}
+                {%- if breakpoint["position"] ?? "" -%}
+                    {%- set position = breakpoint.position != "center" ? "float-#{breakpoint.position}" :
+                        (breakpoint.position == "center" ? "mx-auto") -%}
+                    {%- set class = class|merge([position]) -%}
+                {%- endif -%}
+            {%- endif -%}
+
+            {%- if breakpoint["textAlignment"] ?? "" -%}
+                {%- set class = class|merge(["text-#{breakpoint.textAlignment}"]) -%}
+            {%- endif -%}
+
+        {%- endfor -%}
+
+    {%- endif -%}
+
+    {%- if position is iterable %}
+        {%- if position.position ?? "" | length and position.position != "auto" %}
+            {%- if section["sectionFormat"] ?? "grid" == "flow" %}
+                {%- set class = class|merge(["float-#{position.position}"]) -%}
+            {%- else -%}
+                {%- set class = class|merge([position.position == "center" ? "mx-auto"]) -%}
+            {%- endif -%}
+        {%- endif -%}
+    {%- else -%}
+
+    {%- endif -%}
+
+    {%- set class = class|merge([
+        (styles is iterable ? styles|join(" ") : styles),
+    ])|filter|join(' ') -%}
+
+    {%- if "w-full" not in class -%}
+        {%- set class = "w-full " ~ class -%}
+    {%- endif -%}
+
+
+    <{{ element }} class="{{ class|trim }}" >
+
+        {{ content }}
+
+    </{{ element }}>
+
+{%- endmacro -%}
