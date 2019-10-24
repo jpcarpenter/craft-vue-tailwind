@@ -21,10 +21,6 @@ Fork of the [craft-vue](https://github.com/chasegiunta/craft-vue) template that 
   - Removes unused CSS with Purgecss. Includes whitelister to keep third-party libraries untouched.
   - Bundle size analytics
 
-## Fork It And Make Your Own
-
-You should fork this repo to create your own opinionated boilerplate for your setup. This template makes no assumptions about pre-processors, template structure, or linting configurations.
-
 ## Setup
 
 This boilerplate requires Vue CLI 3 be [installed globally on your machine](https://cli.vuejs.org/guide/installation.html).
