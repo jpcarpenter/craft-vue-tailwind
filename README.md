@@ -27,7 +27,7 @@ This boilerplate requires Vue CLI 3 be [installed globally on your machine](http
 
 ```bash
 # create & install project
-composer create-project chasegiunta/craft-vue-tailwind PATH
+composer create-project jpcarpenter/craft-vue-tailwind PATH
 
 # run Craft's setup & install
 ./craft setup
@@ -36,16 +36,16 @@ composer create-project chasegiunta/craft-vue-tailwind PATH
 ./craft install/plugin twigpack
 
 # install dependencies
-npm install # yarn
+npm install
 
 # (optional) initialize Tailwind's config file (tailwind.config.js)
 ./node_modules/.bin/tailwind init
 
 # run dev server (default runs on localhost:8080)
-npm run dev # yarn dev (alias for 'yarn serve')
+npm run dev
 
 # build for production with minification
-npm run build # yarn build
+npm run build
 ```
 
 Once up and running, the fun part comes in using Vue CLI's GUI to customize your project to suite your needs. Simply run `vue ui` and import your newly created project to get started.
