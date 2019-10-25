@@ -28,16 +28,20 @@ This boilerplate requires Vue CLI 3 be [installed globally on your machine](http
 ```bash
 # create & install project
 composer create-project jpcarpenter/craft-vue-tailwind PATH
+```
 
-# Create and configure DB
+- Create and configure DB
 You'll need to create a database and add the relevent configuration inside of your .env file
 
+```bash
 # run Craft's setup & install
 ./craft setup
+```
 
-# install the plugins
+- Install the plugins
 The easiest way to do this is by logging into your newly created Craft site and head to the plugins section to install all plugins that this boilerplate relies on
 
+```bash
 # install dependencies
 npm install
 
