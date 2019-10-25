@@ -25,10 +25,8 @@ Fork of the [craft-vue](https://github.com/chasegiunta/craft-vue) template that 
 
 This boilerplate requires Vue CLI 3 be [installed globally on your machine](https://cli.vuejs.org/guide/installation.html).
 
-```bash
-# create & install project
-composer create-project jpcarpenter/craft-vue-tailwind PATH
-```
+- **Install this repo:**
+First things first, clone this repo
 
 - **Create and configure DB:**
 You'll need to create a database and add the relevent configuration inside of your .env file
